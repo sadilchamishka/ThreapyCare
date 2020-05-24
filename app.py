@@ -1,5 +1,6 @@
-from flask import Flask,send_file
+from flask import Flask,send_file,jsonify
 from mailmerge import MailMerge
+import pandas as pd
 
 data_entries = [{
     'SupportCategory': 'Red Shoes',
@@ -30,6 +31,9 @@ data_entries = [{
     'Goals':'ailaa'
 }]
 
+data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
+Support_Category_Names = str(set(data['Support Category Name']))
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -38,6 +42,10 @@ def home():
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
+
+@app.route("/supportcategoryname")
+def SupportCategoryName():
+    return jsonify(Support_Category_Names)
     
 if __name__ == "__main__":
     app.run()
