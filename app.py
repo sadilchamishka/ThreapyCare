@@ -1,4 +1,4 @@
-from flask import Flask,send_file
+from flask import Flask,send_file,request
 from mailmerge import MailMerge
 import pandas as pd
 
@@ -44,8 +44,15 @@ def home():
     return send_file('test-output.docx', as_attachment=True)
 
 @app.route("/supportcategoryname")
-def SupportCategoryName():
+def supportCategoryName():
     return Support_Category_Names
+
+@app.route("/supportitemname")
+def supportItemName():
+    content = request.args
+    supportcategoryname = content['supportcategoryname']
+    result = data.loc[data['Support Category Name']==supportcategoryname]['Support Item Name']
+    return str(set(result))
     
 if __name__ == "__main__":
     app.run()
