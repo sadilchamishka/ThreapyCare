@@ -1,4 +1,4 @@
-from flask import Flask,send_file,jsonify
+from flask import Flask,send_file
 from mailmerge import MailMerge
 import pandas as pd
 
@@ -45,7 +45,7 @@ def home():
 
 @app.route("/supportcategoryname")
 def SupportCategoryName():
-    return jsonify(Support_Category_Names)
+    return Support_Category_Names
     
 if __name__ == "__main__":
     app.run()
