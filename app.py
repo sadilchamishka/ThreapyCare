@@ -1,6 +1,8 @@
 from flask import Flask,send_file,request
+from flask_cors import CORS
 from mailmerge import MailMerge
 import pandas as pd
+import json
 
 data_entries = [{
     'SupportCategory': 'Red Shoes',
@@ -32,9 +34,17 @@ data_entries = [{
 }]
 
 data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
-Support_Category_Names = str(set(data['Support Category Name']))
+result = {}
+values = []
+
+for i in data['Support Category Name'].values:
+  values.append(i)
+result['SupportCategoryName'] = values
+
+Support_Category_Names = json.dumps(result)
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route("/")
 def home():
@@ -51,8 +61,39 @@ def supportCategoryName():
 def supportItemName():
     content = request.args
     supportcategoryname = content['supportcategoryname']
-    result = data.loc[data['Support Category Name']==supportcategoryname]['Support Item Name']
-    return str(set(result))
     
+    item_list=data.loc[data['Support Category Name']==supportcategoryname]
+    result = {}
+    values = []
+    for i in item_list[['Support Item Number','Support Item Name']].values:
+        item = {}
+        item["ItemNumber"] = i[0]
+        item["ItemName"] = i[1]
+        values.append(item)
+
+    result['SupportItem'] = values
+    json_data = json.dumps(result)
+    return json_data
+
+@app.route("/supportitemdetails")
+def supportitemdetails():
+    content = request.args
+    supportitem = content['supportitem']
+    result = {}
+    item_details = data.loc[data['Support Item Name']==supportitem].values[0]
+    result['SupportCategoryName'] = item_details[0]
+    result['SupportItemNumber'] = item_details[1]
+    result['SupportItemName'] = item_details[2]
+    result['Unit'] = item_details[3]
+    result['PriceC'] = item_details[4]
+    result['Quote'] = item_details[5]
+    result['Price'] = item_details[6]
+    result['Travel'] = item_details[7]
+    result['Cancels'] = item_details[8]
+    result['Reporting'] = item_details[9]
+    result['NonF2F'] = item_details[0]
+
+    json_data = json.dumps(result)
+
 if __name__ == "__main__":
     app.run()
