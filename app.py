@@ -95,6 +95,7 @@ def supportitemdetails():
     result['NonF2F'] = item_details[0]
 
     json_data = json.dumps(result)
+    return json_data
 
 if __name__ == "__main__":
     app.run()
