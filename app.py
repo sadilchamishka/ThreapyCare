@@ -80,6 +80,7 @@ def supportItemName():
 def supportitemdetails():
     content = request.args
     supportitem = content['supportitem']
+    response = {}
     result = {}
     item_details = data.loc[data['Support Item Name']==supportitem].values[0]
     result['SupportCategoryName'] = item_details[0]
@@ -94,7 +95,8 @@ def supportitemdetails():
     result['Reporting'] = item_details[9]
     result['NonF2F'] = item_details[0]
 
-    json_data = json.dumps(result)
+    response['result'] = result
+    json_data = json.dumps(response)
     return json_data
 
 if __name__ == "__main__":
