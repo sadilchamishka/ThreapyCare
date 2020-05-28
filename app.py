@@ -38,7 +38,8 @@ result = {}
 values = []
 
 for i in data['Support Category Name'].values:
-  values.append(i)
+    if i not in values:
+        values.append(i)
 result['SupportCategoryName'] = values
 
 Support_Category_Names = json.dumps(result)
