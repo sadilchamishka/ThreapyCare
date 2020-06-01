@@ -97,5 +97,10 @@ def supportitemdetails():
     json_data = json.dumps(result)
     return json_data
 
+@app.route('/document', methods=['POST'])
+def document():
+    content = request.json
+    return content['data']
+
 if __name__ == "__main__":
     app.run()
