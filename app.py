@@ -85,17 +85,17 @@ def supportitemdetails():
     result['SupportCategoryName'] = item_details[0]
     result['SupportItemNumber'] = item_details[1]
     result['SupportItemName'] = item_details[2]
-    result['Unit'] = item_details[3]
-    result['PriceC'] = item_details[4]
-    result['Quote'] = item_details[5]
+    #result['Unit'] = item_details[3]
+    #result['PriceC'] = item_details[4]
+    #result['Quote'] = item_details[5]
     result['Price'] = item_details[6]
-    result['Travel'] = item_details[7]
-    result['Cancels'] = item_details[8]
-    result['Reporting'] = item_details[9]
-    result['NonF2F'] = item_details[0]
+    #result['Travel'] = item_details[7]
+    #result['Cancels'] = item_details[8]
+    #result['Reporting'] = item_details[9]
+    #result['NonF2F'] = item_details[10]
 
     json_data = json.dumps(result)
-    return json_data
+    return result
 
 @app.route('/document', methods=['POST'])
 def document():
