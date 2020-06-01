@@ -81,7 +81,10 @@ def supportitemdetails():
     content = request.args
     supportitem = content['supportitem']
     item_details = data.loc[data['Support Item Name']==supportitem].values[0]
-    return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price": item_details[6]})
+    price = item_details[6]
+    if pd.isna(item_details[6]):
+        price = 0
+    return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price":price })
 
 @app.route('/document', methods=['POST'])
 def document():
