@@ -88,14 +88,21 @@ def supportitemdetails():
 
 @app.route('/document', methods=['POST'])
 def document():
-    r=""
     content = request.json
-    print(content['data'])
+    data_entries = []
+
     for i in content['data']:
-        print(i)
-        for j in i.values:
-            r=r+j
-    return r
+        x={}
+        x['SupportCategory'] = i['SupportCategoryName']
+        x['ItemName'] = i['SupportItemName']
+        x['ItemId'] = i['SupportItemNumber']
+        x['Cost'] = i['Price']
+        data_entries.append(x)
+
+    document = MailMerge('Schedule of Services (SOS)  draft.docx')
+    document.merge_rows('SupportCategory',data_entries)
+    document.write('test-output.docx')
+    return send_file('test-output.docx', as_attachment=True)
 
 if __name__ == "__main__":
     app.run()
