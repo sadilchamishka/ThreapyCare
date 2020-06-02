@@ -90,8 +90,11 @@ def supportitemdetails():
 def document():
     r=""
     content = request.json
+    print(content['data'])
     for i in content['data']:
-        r=r+i
+        print(i)
+        for j in i.values:
+            r=r+j
     return r
 
 if __name__ == "__main__":
