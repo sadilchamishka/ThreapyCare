@@ -4,35 +4,6 @@ from mailmerge import MailMerge
 import pandas as pd
 import json
 
-data_entries = [{
-    'SupportCategory': 'Red Shoes',
-    'SupportItem': '$10.00',
-    'H': '2500',
-    'D': '10',
-    'S':'gsfagh',
-    'Cost':'$200',
-    'Description':'gafstdt',
-    'Goals':'rtwtfhg'
-}, {
-    'SupportCategory': 'blue Shoes',
-    'SupportItem': '$50.00',
-    'H': '2500',
-    'D': '10',
-    'S':'mannnn',
-    'Cost':'$400',
-    'Description':'gafstdt',
-    'Goals':'rtwtfhg'
-}, {
-    'SupportCategory': 'green Shoes',
-    'SupportItem': '80.00',
-    'H': '2500',
-    'D': '10',
-    'S':'gsfagh',
-    'Cost':'$200',
-    'Description':'sadil',
-    'Goals':'ailaa'
-}]
-
 data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
 result = {}
 values = []
@@ -46,13 +17,6 @@ Support_Category_Names = json.dumps(result)
 
 app = Flask(__name__)
 cors = CORS(app)
-
-@app.route("/")
-def home():
-    document = MailMerge('Schedule of Services (SOS)  draft.docx')
-    document.merge_rows('SupportCategory',data_entries)
-    document.write('test-output.docx')
-    return send_file('test-output.docx', as_attachment=True)
 
 @app.route("/supportcategoryname")
 def supportCategoryName():
@@ -96,7 +60,7 @@ def document():
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = "10"
+        x['Cost'] = str(i['Price'])
         x['H'] = '2500'
         x['Description'] = 'gafstdt'
         x['Goals'] = 'rtwtfhg'
