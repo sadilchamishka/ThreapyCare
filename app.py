@@ -88,8 +88,11 @@ def supportitemdetails():
 
 @app.route('/document', methods=['POST'])
 def document():
+    r=""
     content = request.json
-    return content['data']
+    for i in content['data']:
+        r=r+i
+    return r
 
 if __name__ == "__main__":
     app.run()
