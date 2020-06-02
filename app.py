@@ -96,7 +96,10 @@ def document():
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = i['Price']
+        x['Cost'] = "10"
+        x['H'] = '2500'
+        x['Description'] = 'gafstdt'
+        x['Goals'] = 'rtwtfhg'
         data_entries.append(x)
 
     document = MailMerge('Schedule of Services (SOS)  draft.docx')
