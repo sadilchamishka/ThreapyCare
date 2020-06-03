@@ -54,16 +54,18 @@ def supportitemdetails():
 def document():
     content = request.json
     data_entries = []
-
-    for i in content['data']:
+    print(content['hoursPerWeekList'])
+    print(content['durationList'])
+    for i,j,k in zip(content['data'],content['hoursPerWeekList'],content['durationList']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = str(i['Price'])
-        x['H'] = '2500'
-        x['Description'] = 'gafstdt'
-        x['Goals'] = 'rtwtfhg'
+        x['Cost'] = str(i['Price']*j*k)
+        x['H'] = str(j)
+        x['M'] = str(k)
+        x['Description'] = 'Not yet implemented'
+        x['Goals'] = 'Not yet implemented'
         data_entries.append(x)
 
     document = MailMerge('Schedule of Services (SOS)  draft.docx')
