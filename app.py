@@ -54,9 +54,9 @@ def supportitemdetails():
 def document():
     content = request.json
     data_entries = []
-    print(content['hoursPerWeekList'])
-    print(content['durationList'])
-    for i,j,k in zip(content['data'],content['hoursPerWeekList'],content['durationList']):
+    print(content['hoursperweek'])
+    print(content['duration'])
+    for i,j,k in zip(content['data'],content['hoursperweek'],content['duration']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
