@@ -60,7 +60,7 @@ def document():
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = str(i['Price']*int(j)*int(k)
+        x['Cost'] = str(i['Price']*int(j)*int(k))
         x['H'] = j
         x['M'] = k
         x['Description'] = 'Not yet implemented'
