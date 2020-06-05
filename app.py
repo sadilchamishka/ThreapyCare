@@ -5,22 +5,32 @@ import pandas as pd
 import json
 
 data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
-result = {}
-values = []
+data = data[data['Price'].notna()]
+goals = pd.read_excel('Goals Associated for services.xlsx')
+goals = goals.dropna()
 
+Support_Category_Name = []
 for i in data['Support Category Name'].values:
-    if i not in values:
-        values.append(i)
-result['SupportCategoryName'] = values
+    if i not in Support_Category_Name:
+        Support_Category_Name.append(i)
 
-Support_Category_Names = json.dumps(result)
+goals_list = []
+for i in goals['Goals'].values:
+    if i not in goals_list:
+        goals_list.append(i)
 
 app = Flask(__name__)
 cors = CORS(app)
 
+@app.route("/goals")
+def goals():
+    response['goals'] = goals_list
+    return json.dumps(response)
+    
 @app.route("/supportcategoryname")
 def supportCategoryName():
-    return Support_Category_Names
+    response['SupportCategoryName'] = Support_Category_Name
+    return json.dumps(response)
 
 @app.route("/supportitemname")
 def supportItemName():
