@@ -76,10 +76,9 @@ def document():
         x['H'] = j
         x['M'] = k
         x['Description'] = 'Not yet implemented'
-        print(l)
         goals = ""
         for goal in l:
-            goals = goals + goal + "\n"
+            goals = goals + goal + "\n" + "\n"
         x['Goals'] = goals
         data_entries.append(x)
 
