@@ -67,7 +67,7 @@ def document():
     content = request.json
     data_entries = []
     
-    for i,j,k in zip(content['data'],content['hoursperweek'],content['duration']):
+    for i,j,k,l in zip(content['data'],content['hoursperweek'],content['duration'],content['goals']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
@@ -76,7 +76,11 @@ def document():
         x['H'] = j
         x['M'] = k
         x['Description'] = 'Not yet implemented'
-        x['Goals'] = 'Not yet implemented'
+        print(l)
+        goals = ""
+        for goal in l:
+            goals = goals + goal + "\n"
+        x['Goals'] = goals
         data_entries.append(x)
 
     document = MailMerge('Schedule of Services (SOS)  draft.docx')
