@@ -24,11 +24,13 @@ cors = CORS(app)
 
 @app.route("/goals")
 def goals():
+    response = {}
     response['goals'] = goals_list
     return json.dumps(response)
-    
+
 @app.route("/supportcategoryname")
 def supportCategoryName():
+    response = {}
     response['SupportCategoryName'] = Support_Category_Name
     return json.dumps(response)
 
