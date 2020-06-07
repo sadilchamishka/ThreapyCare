@@ -20,6 +20,8 @@ cors = CORS(app)
 def goals():
     response = {}
     #response['goals'] = goals['Goals'].values
+    print("****************************************")
+    print(goals['Service'].values)
     response['service'] = goals['Service'].values
     print(response)
     return json.dumps(response)
