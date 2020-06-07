@@ -4,22 +4,20 @@ from mailmerge import MailMerge
 import pandas as pd
 import json
 
-data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
+# load the dataset and remove items with price is null or not provided. Support category names are lot of duplicates.
+# Set operation get unique names and list of names are created.
+data = pd.read_excel('Dataset.xlsx')    
 data = data[data['Price'].notna()]
-goals = pd.read_excel('Goals Associated for services.xlsx')
+Support_Category_Name = list(set(data['Support Category Name'].values))
 
-Support_Category_Name = []
-for i in data['Support Category Name'].values:
-    if i not in Support_Category_Name:
-        Support_Category_Name.append(i)
+# load the goals data and create a list from services
+goals = pd.read_excel('Goals.xlsx')
+goals_list = [service for service in goals['Service'].values]
 
-goals_list = []
-for i in goals['Service'].values:
-    if i not in goals_list:
-        goals_list.append(i)
-
+# Create Flask app and enable CORS
 app = Flask(__name__)
 cors = CORS(app)
+
 
 @app.route("/goals")
 def goals():
