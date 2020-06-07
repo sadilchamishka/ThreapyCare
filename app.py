@@ -9,6 +9,7 @@ import json
 data = pd.read_excel('Dataset.xlsx')    
 data = data[data['Price'].notna()]
 Support_Category_Name = list(set(data['Support Category Name'].values))
+Support_Category_Name.sort()
 
 # load the goals data and create a list from services
 goals = pd.read_excel('Goals.xlsx')
@@ -37,25 +38,20 @@ def supportCategoryName():
 def supportItemName():
     content = request.args
     supportcategoryname = content['supportcategoryname']                     # get support category name from the request parameters
-    item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the list of
+    item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the array of items with requested support category name
 
     result = {}
-    result['SupportItem'] = [item for item in item_list['Support Item Name'].values]
-    print(result)
-    json_data = json.dumps(result)
-    print("*************************")
-    
+    result['SupportItem'] = [item for item in item_list['Support Item Name'].values]   # create a list from array of items in order to retun easily
+    json_data = json.dumps(result)    
     return json_data
 
+# Return json object of the details of requested item
 @app.route("/supportitemdetails")
 def supportitemdetails():
     content = request.args
     supportitem = content['supportitem']
-    item_details = data.loc[data['Support Item Name']==supportitem].values[0]
-    price = item_details[6]
-    if pd.isna(item_details[6]):
-        price = 0
-    return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price":price })
+    item_details = data.loc[data['Support Item Name']==supportitem].values[0]   # get the first and only item from the array
+    return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price": item_details[6]})
 
 @app.route('/document', methods=['POST'])
 def document():
@@ -77,7 +73,7 @@ def document():
         x['Goals'] = goals
         data_entries.append(x)
 
-    document = MailMerge('Schedule of Services (SOS)  draft.docx')
+    document = MailMerge('WordTemplate.docx')
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
