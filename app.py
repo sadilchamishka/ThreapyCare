@@ -40,10 +40,11 @@ def supportItemName():
     item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the list of
 
     result = {}
-    result['SupportItem'] = item_list['Support Item Name'].values
+    result['SupportItem'] = item_list[['Support Item Name']].values
+    print(result)
     json_data = json.dumps(result)
     print("*************************")
-    print(result)
+    
     return json_data
 
 @app.route("/supportitemdetails")
