@@ -19,7 +19,7 @@ cors = CORS(app)
 @app.route("/goals")
 def goals():
     response = {}
-    response['goals'] = goals['Goals'].values
+    #response['goals'] = goals['Goals'].values
     response['service'] = goals['Service'].values
     return json.dumps(response)
 
