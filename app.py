@@ -9,7 +9,7 @@ import json
 data = pd.read_excel('Dataset.xlsx')    
 data = data[data['Price'].notna()]
 Support_Category_Name = list(set(data['Support Category Name'].values))
-Support_Category_Name.sort()
+Support_Category_Name.sort()  # This is not need.
 
 # load the goals data and create a list from services
 goals = pd.read_excel('Goals.xlsx')
@@ -53,19 +53,19 @@ def supportitemdetails():
     item_details = data.loc[data['Support Item Name']==supportitem].values[0]   # get the first and only item from the array
     return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price": item_details[6]})
 
+# Return the word document filled with data
 @app.route('/document', methods=['POST'])
 def document():
     content = request.json
     data_entries = []
     
-    for i,j,k,l in zip(content['data'],content['hoursperweek'],content['duration'],content['goals']):
+    for i,j,l in zip(content['data'],content['hours'],content['goals']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = str(i['Price']*int(j)*int(k)*4)
+        x['Cost'] = str(i['Price']*int(j))
         x['H'] = j
-        x['M'] = k
         x['Description'] = 'Not yet implemented'
         goals = ""
         for goal in l:
