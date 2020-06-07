@@ -21,8 +21,8 @@ def goals():
     response = {}
     #response['goals'] = goals['Goals'].values
     print("****************************************")
-    print(goals['Goals'].values)
-    response['service'] = goals['Goals'].values
+    print(goals['Goals'])
+    response['service'] = goals['Goals']
     print(response)
     return json.dumps(response)
 
