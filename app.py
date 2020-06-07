@@ -42,6 +42,8 @@ def supportItemName():
     result = {}
     result['SupportItem'] = item_list['Support Item Name'].values
     json_data = json.dumps(result)
+    print("*************************")
+    print(result)
     return json_data
 
 @app.route("/supportitemdetails")
