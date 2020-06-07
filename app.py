@@ -18,34 +18,29 @@ goals_list = [service for service in goals['Service'].values]
 app = Flask(__name__)
 cors = CORS(app)
 
-
+# Return json array of goals
 @app.route("/goals")
 def goals():
     response = {}
     response['goals'] = goals_list
     return json.dumps(response)
 
+# Retunr json array of support catogery names
 @app.route("/supportcategoryname")
 def supportCategoryName():
     response = {}
     response['SupportCategoryName'] = Support_Category_Name
     return json.dumps(response)
 
+# Return json array of support item names and ids
 @app.route("/supportitemname")
 def supportItemName():
     content = request.args
-    supportcategoryname = content['supportcategoryname']
-    
-    item_list=data.loc[data['Support Category Name']==supportcategoryname]
-    result = {}
-    values = []
-    for i in item_list[['Support Item Number','Support Item Name']].values:
-        item = {}
-        item["ItemNumber"] = i[0]
-        item["ItemName"] = i[1]
-        values.append(item)
+    supportcategoryname = content['supportcategoryname']                     # get support category name from the request parameters
+    item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the list of
 
-    result['SupportItem'] = values
+    result = {}
+    result['SupportItem'] = item_list['Support Item Name'].values
     json_data = json.dumps(result)
     return json_data
 
