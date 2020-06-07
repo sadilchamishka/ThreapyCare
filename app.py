@@ -21,6 +21,7 @@ def goals():
     response = {}
     #response['goals'] = goals['Goals'].values
     response['service'] = goals['Service'].values
+    print(response)
     return json.dumps(response)
 
 @app.route("/supportcategoryname")
