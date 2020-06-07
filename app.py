@@ -7,6 +7,7 @@ import json
 data = pd.read_excel('PB Support Catalogue 2019-20 Feb .xlsx')
 data = data[data['Price'].notna()]
 goals = pd.read_excel('Goals Associated for services.xlsx')
+goals = goals.dropna()
 
 Support_Category_Name = []
 for i in data['Support Category Name'].values:
