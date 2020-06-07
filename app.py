@@ -13,17 +13,18 @@ for i in data['Support Category Name'].values:
     if i not in Support_Category_Name:
         Support_Category_Name.append(i)
 
+goals_list = []
+for i in goals['Goals'].values:
+    if i not in goals_list:
+        goals_list.append(i)
+
 app = Flask(__name__)
 cors = CORS(app)
 
 @app.route("/goals")
 def goals():
     response = {}
-    #response['goals'] = goals['Goals'].values
-    print("****************************************")
-    print(goals['Goals'])
-    response['service'] = goals['Goals']
-    print(response)
+    response['goals'] = goals_list
     return json.dumps(response)
 
 @app.route("/supportcategoryname")
