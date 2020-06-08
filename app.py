@@ -65,7 +65,7 @@ def document():
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
         x['Cost'] = str(i['Price']*int(j))
-        x['H'] = j
+        x['H'] = str(j)
         x['Description'] = 'Not yet implemented'
         goals = ""
         for goal in l:
