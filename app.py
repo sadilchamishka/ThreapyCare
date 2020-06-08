@@ -15,6 +15,10 @@ Support_Category_Name.sort()  # This is not need.
 goals = pd.read_excel('Goals.xlsx')
 goals_list = [service for service in goals['Service'].values]
 
+# load the policy file and creata a list
+policies = pd.read_excel('Policies.xlsx')
+policy_list = [policy for policy in policies['Policy'].values]
+
 # Create Flask app and enable CORS
 app = Flask(__name__)
 cors = CORS(app)
@@ -24,6 +28,13 @@ cors = CORS(app)
 def goals():
     response = {}
     response['goals'] = goals_list
+    return json.dumps(response)
+
+# Return json array of policies
+@app.route("/policy")
+def goals():
+    response = {}
+    response['policy'] = policy_list
     return json.dumps(response)
 
 # Retunr json array of support catogery names
@@ -74,6 +85,7 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
+    document.merge(name=content['name'],ndis=content['ndis'],sos=content['sos'],duration=content['duration'],start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
