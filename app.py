@@ -32,7 +32,7 @@ def goals():
 
 # Return json array of policies
 @app.route("/policy")
-def goals():
+def policy():
     response = {}
     response['policy'] = policy_list
     return json.dumps(response)
