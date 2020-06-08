@@ -70,14 +70,14 @@ def document():
     content = request.json
     data_entries = []
     
-    for i,j,l in zip(content['data'],content['hours'],content['goals']):
+    for i,j,l,m in zip(content['data'],content['hours'],content['goals'],content['description']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
         x['Cost'] = str(i['Price']*int(j))
         x['H'] = str(j)
-        x['Description'] = 'Not yet implemented'
+        x['Description'] = str(m)
         goals = ""
         for goal in l:
             goals = goals + goal + "\n" + "\n"
@@ -85,7 +85,7 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
-    document.merge(name=content['name'],ndis=content['ndis'],sos=content['sos'],duration=str(content['duration']),start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
+    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(content['duration']),start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
