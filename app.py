@@ -85,7 +85,7 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
-    document.merge(name=content['name'],ndis=content['ndis'],sos=content['sos'],duration=content['duration'],start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
+    document.merge(name=content['name'],ndis=content['ndis'],sos=content['sos'],duration=str(content['duration']),start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
