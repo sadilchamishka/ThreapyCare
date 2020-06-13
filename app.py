@@ -23,6 +23,15 @@ policy_list = [policy for policy in policies['Policy'].values]
 app = Flask(__name__)
 cors = CORS(app)
 
+@app.route("/updategoals",methods = ['POST'])
+def updateGoals():
+    print("**********************************")
+    f = request.files['file']  
+    f.save('Goals.xlsx') 
+    goals = pd.read_excel(f)
+    print(goals['Service'].values)
+    goals_list = [service for service in goals['Service'].values]
+
 # Return json array of goals
 @app.route("/goals")
 def goals():
