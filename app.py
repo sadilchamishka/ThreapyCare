@@ -23,12 +23,22 @@ policy_list = [policy for policy in policies['Policy'].values]
 app = Flask(__name__)
 cors = CORS(app)
 
+@app.route("/updatedata",methods = ['POST'])
+def updateData():
+    f = request.files['file'] 
+    f.save('Dataset.xlsx') 
+    data = pd.read_excel('Dataset.xlsx')
+    data = data[data['Price'].notna()]
+    global Support_Category_Name 
+    Support_Category_Name = list(set(data['Support Category Name'].values))
+    Support_Category_Name.sort()
+    return "Success"
+
 @app.route("/updategoals",methods = ['POST'])
 def updateGoals():
     f = request.files['file'] 
     f.save('Goals.xlsx') 
     goals = pd.read_excel('Goals.xlsx')
-    print(goals['Service'].values)
     global goals_list 
     goals_list = [service for service in goals['Service'].values]
     return "Success"
