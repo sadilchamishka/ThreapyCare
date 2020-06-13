@@ -32,6 +32,7 @@ def updateGoals():
     goals = pd.read_excel(f)
     print(goals['Service'].values)
     goals_list = [service for service in goals['Service'].values]
+    return "Success"
 
 # Return json array of goals
 @app.route("/goals")
