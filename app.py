@@ -29,6 +29,7 @@ def updateGoals():
     f.save('Goals1.xlsx') 
     goals = pd.read_excel('Goals1.xlsx')
     print(goals['Service'].values)
+    global goals_list 
     goals_list = [service for service in goals['Service'].values]
     return "Success"
 
