@@ -26,7 +26,8 @@ cors = CORS(app)
 @app.route("/updategoals",methods = ['POST'])
 def updateGoals():
     print("**********************************")
-    f = request.files['file']  
+    f = request.files['file'] 
+    print(f) 
     f.save('Goals.xlsx') 
     goals = pd.read_excel(f)
     print(goals['Service'].values)
