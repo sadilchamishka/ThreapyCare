@@ -26,7 +26,8 @@ cors = CORS(app)
 @app.route("/updatedata",methods = ['POST'])
 def updateData():
     f = request.files['file'] 
-    f.save('Dataset.xlsx') 
+    f.save('Dataset.xlsx')
+    global data 
     data = pd.read_excel('Dataset.xlsx')
     data = data[data['Price'].notna()]
     global Support_Category_Name 
