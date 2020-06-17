@@ -69,10 +69,13 @@ def supportCategoryName():
 @app.route("/supportitemname")
 def supportItemName():
     content = request.args
+    print("***************************")
     supportcategoryname = content['supportcategoryname']                     # get support category name from the request parameters
+    print(supportcategoryname)
     item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the array of items with requested support category name
-
+    print(item_list)
     result = {}
+    
     result['SupportItem'] = [item for item in item_list['Support Item Name'].values]   # create a list from array of items in order to retun easily
     json_data = json.dumps(result)    
     return json_data
