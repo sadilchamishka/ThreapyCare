@@ -90,7 +90,9 @@ def supportitemdetails():
 # Return the word document filled with data
 @app.route('/document', methods=['POST'])
 def document():
-    content = request.json
+    content1 = request.json
+    img = content1['signature']
+    content = content1['rawdate']
     data_entries = []
     
     for i,j,l,m,n in zip(content['data'],content['hours'],content['goals'],content['description'],content['hoursFrequncy']):
