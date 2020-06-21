@@ -92,7 +92,7 @@ def supportitemdetails():
 def document():
     content = request.json
     data_entries = []
-    print("*************************")
+    
     for i,j,l,m,n in zip(content['data'],content['hours'],content['goals'],content['description'],content['hoursFrequncy']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
@@ -111,8 +111,8 @@ def document():
             goals = goals + goal + "\n" + "\n"
         x['Goals'] = goals
         data_entries.append(x)
-
-    print(data_entries)
+    print("*************")
+    print(content['img'])
     document = MailMerge('WordTemplate.docx')
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
