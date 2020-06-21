@@ -126,6 +126,7 @@ def document():
     document.write('test-output.docx')
     doc = Document('test-output.docx')
     doc.add_picture(filename,width=Inches(2.0), height=Inches(1))
+    doc.save('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
 
 if __name__ == "__main__":
