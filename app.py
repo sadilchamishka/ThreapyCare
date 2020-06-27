@@ -3,9 +3,6 @@ from flask_cors import CORS
 from mailmerge import MailMerge
 import pandas as pd
 import json
-import base64
-from docx import Document
-from docx.shared import Inches
 
 # load the dataset and remove items with price is null or not provided. Support category names are lot of duplicates.
 # Set operation get unique names and list of names are created.
@@ -73,9 +70,7 @@ def supportCategoryName():
 def supportItemName():
     content = request.args
     supportcategoryname = content['supportcategoryname']                     # get support category name from the request parameters
-    print(supportcategoryname)
     item_list=data.loc[data['Support Category Name']==supportcategoryname]   # get the array of items with requested support category name
-    print(item_list)
     result = {}
     
     result['SupportItem'] = [item for item in item_list['Support Item Name'].values]   # create a list from array of items in order to retun easily
@@ -114,19 +109,11 @@ def document():
             goals = goals + goal + "\n" + "\n"
         x['Goals'] = goals
         data_entries.append(x)
-    print("*************")
-    imgdata = base64.b64decode(content['img'][22:])
-    filename = 'signature.jpg'  
-    with open(filename, 'wb') as f:
-        f.write(imgdata)
 
     document = MailMerge('WordTemplate.docx')
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
-    doc = Document('test-output.docx')
-    doc.add_picture(filename,width=Inches(2.0), height=Inches(1))
-    doc.save('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
 
 if __name__ == "__main__":
