@@ -81,8 +81,7 @@ def supportItemName():
 @app.route("/supportitemdetails")
 def supportitemdetails():
     content = request.args
-    supportitem = content['supportitem']
-    item_details = data.loc[data['Support Item Name']==supportitem].values[0]   # get the first and only item from the array
+    item_details = data.query('`Support Category Name`=={} & `Support Item Name`=={}'.format(content['supportcategoryname'],content['supportitem']))
     return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price": item_details[6]})
 
 # Return the word document filled with data
