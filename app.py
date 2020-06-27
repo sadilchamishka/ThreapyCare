@@ -13,6 +13,7 @@ Support_Category_Name.sort()  # This is not need.
 
 # load the goals data and create a list from services
 goals = pd.read_excel('Goals.xlsx')
+goals = goals.fillna("")
 goals_list = [service for service in goals['Service'].values]
 goals_descriptions = [description for description in goals['Goals'].values]
 
