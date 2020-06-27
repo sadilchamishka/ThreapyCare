@@ -54,7 +54,7 @@ def goals():
     return json.dumps(response)
 
 @app.route("/goaldescription")
-def goals():
+def goaldescription():
     response = {}
     response['description'] = goals_descriptions
     return json.dumps(response)
