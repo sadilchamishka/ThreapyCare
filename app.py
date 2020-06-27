@@ -13,12 +13,9 @@ Support_Category_Name.sort()  # This is not need.
 
 # load the goals data and create a list from services
 goals = pd.read_excel('Goals.xlsx')
-goals_list = []
-for i,j in zip(goals['Service'].values,goals['Goals'].values):
-    goal = {}
-    goal[i] = j
-    goals_list.append(goal)
-print(goals_list)
+goals_list = [service for service in goals['Service'].values]
+goals_descriptions = [description for description in goals['Goals'].values]
+
 
 # load the policy file and creata a list
 policies = pd.read_excel('Policies.xlsx')
@@ -54,6 +51,12 @@ def updateGoals():
 def goals():
     response = {}
     response['goals'] = goals_list
+    return json.dumps(response)
+
+@app.route("/goaldescription")
+def goals():
+    response = {}
+    response['description'] = goals_descriptions
     return json.dumps(response)
 
 # Return json array of policies
