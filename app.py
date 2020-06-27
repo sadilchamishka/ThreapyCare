@@ -50,7 +50,10 @@ def updateGoals():
     f.save('Goals.xlsx') 
     goals = pd.read_excel('Goals.xlsx')
     global goals_list 
-    goals_list = [service for service in goals['Service'].values]
+    for i,j in zip(goals['Service'].values,goals['Goals'].values):
+        goal = {}
+        goal[i] = j
+        goals_list.append(goal)
     return "Success"
 
 # Return json array of goals
@@ -112,13 +115,20 @@ def document():
         x['SupportCategory'] = i['SupportCategoryName']
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
-        x['Cost'] = str(i['Price']*int(j))
+        
+        multiplication = ""
         if (n[-1]=="W"):
             x['H'] = "Hours per Week "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1]
+            multiplication = n.split(',')[0] + " x " + n.split(',')[1] + "x"
         elif (n[-1]=="M"):
             x['H'] = "Hours per Month "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1]
+            multiplication = n.split(',')[0] + " x " + n.split(',')[1] + "x"
         else:
             x['H'] = "Hours "+ n
+            multiplication = n + " x "
+        
+        x['Cost'] = multiplication + str(i['Price']) + "\n" + str(i['Price']*int(j))
+
         x['Description'] = str(m)
         goals = ""
         for goal in l:
