@@ -84,7 +84,7 @@ def supportitemdetails():
     supportcategoryname = content['supportcategoryname'] 
     supportitem = content['supportitem']
     item_details = data.query('`Support Category Name`=={} & `Support Item Name`=={}'.format('"'+supportcategoryname+'"','"'+supportitem+'"'))
-    return jsonify({"SupportCategoryName": item_details[0], "SupportItemNumber": item_details[1], "SupportItemName": item_details[2],"Price": item_details[6]})
+    return jsonify({"SupportCategoryName": item_details['Support Category Name'].values[0], "SupportItemNumber": item_details['Support Item Number'].values[0], "SupportItemName": item_details['Support Item Name'].values[0],"Price": item_details['Price'].values[0]})
 
 # Return the word document filled with data
 @app.route('/document', methods=['POST'])
