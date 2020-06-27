@@ -127,7 +127,7 @@ def document():
             x['H'] = "Hours "+ n
             multiplication = n + " x "
         
-        x['Cost'] = multiplication + str(i['Price']) + "\n" + str(i['Price']*int(j))
+        x['Cost'] = multiplication + str(i['Price']) + "\n"+"\n" + str(i['Price']*int(j))
 
         x['Description'] = str(m)
         goals = ""
