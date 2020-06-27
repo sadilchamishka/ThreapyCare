@@ -15,9 +15,8 @@ Support_Category_Name.sort()  # This is not need.
 goals = pd.read_excel('Goals.xlsx')
 goals_list = []
 for i,j in zip(goals['Service'].values,goals['Goals'].values):
-    goal = []
-    goal.append(i)
-    goal.append(j)
+    goal = {}
+    goal[i] = j
     goals_list.append(goal)
 print(goals_list)
 
