@@ -56,6 +56,15 @@ def updateGoals():
         goals_list.append(goal)
     return "Success"
 
+@app.route("/updatepolicy",methods = ['POST'])
+def updatePolicy():
+    f = request.files['file'] 
+    f.save('Policies.xlsx') 
+    policies = pd.read_excel('Policies.xlsx')
+    global policy_list 
+    policy_list = [policy for policy in policies['Policy'].values]
+    return "Success"
+
 # Return json array of goals
 @app.route("/goals")
 def goals():
@@ -118,16 +127,16 @@ def document():
         
         multiplication = ""
         if (n[-1]=="W"):
-            x['H'] = "Hours per Week "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1]
-            multiplication = n.split(',')[0] + " x " + n.split(',')[1] + "x"
+            x['H'] = "Hours per Week "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1] + " weeks"
+            multiplication = n.split(',')[0] + "x" + n.split(',')[1] + "x"
         elif (n[-1]=="M"):
-            x['H'] = "Hours per Month "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1]
-            multiplication = n.split(',')[0] + " x " + n.split(',')[1] + "x"
+            x['H'] = "Hours per Month "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1] + " months"
+            multiplication = n.split(',')[0] + "x" + n.split(',')[1] + "x"
         else:
             x['H'] = "Hours "+ n
-            multiplication = n + " x "
+            multiplication = n + "x"
         
-        x['Cost'] = multiplication + str(i['Price']) + "\n"+"\n" + str(i['Price']*int(j))
+        x['Cost'] = multiplication + str(i['Price']) + "$" + "\n"+"\n" + str(i['Price']*int(j)) + "$"
 
         x['Description'] = str(m)
         goals = ""
