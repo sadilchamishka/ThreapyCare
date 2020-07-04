@@ -118,7 +118,7 @@ def supportitemdetails():
 def document():
     content = request.json
     data_entries = []
-    
+    total_cost = 0
     for i,j,l,m,n in zip(content['data'],content['hours'],content['goals'],content['description'],content['hoursFrequncy']):
         x={}
         x['SupportCategory'] = i['SupportCategoryName']
@@ -137,7 +137,7 @@ def document():
             multiplication = n + "x"
         
         x['Cost'] = multiplication + "$" + str(i['Price']) + "\n"+"\n" + "$" + str(i['Price']*int(j))
-
+        total_cost += i['Price']*int(j)
         x['Description'] = str(m)
         goals = ""
         for goal in l:
@@ -146,6 +146,7 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
+    document.merge(totalcost=str(total_cost))
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
