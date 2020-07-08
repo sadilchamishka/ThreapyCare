@@ -118,7 +118,7 @@ def document():
             x['H'] = "Hours per plan period: "+ n
             multiplication = n + "x"
         
-        x['Cost'] = multiplication + "$" + str(i['Price']) + " =" + "\n"+"\n" + "$" + str(round(i['Price']*int(j),2))
+        x['Cost'] = multiplication + "$" + str(i['Price']) + "\n= " + "$" + str(round(i['Price']*int(j),2))
         total_cost += i['Price']*int(j)
         x['Description'] = str(m)
         goals = ""
