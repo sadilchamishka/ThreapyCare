@@ -109,13 +109,13 @@ def document():
         
         multiplication = ""
         if (n[-1]=="W"):
-            x['H'] = "Hours per Week "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1] + " weeks"
+            x['H'] = "Hours per Week: "+ n.split(',')[0] + "\n" + "Duration: " + n.split(',')[1] + " weeks"
             multiplication = n.split(',')[0] + "x" + n.split(',')[1] + "x"
         elif (n[-1]=="M"):
-            x['H'] = "Hours per Month "+ n.split(',')[0] + "\n" + "Duration " + n.split(',')[1] + " months"
+            x['H'] = "Hours per Month: "+ n.split(',')[0] + "\n" + "Duration: " + n.split(',')[1] + " months"
             multiplication = n.split(',')[0] + "x" + n.split(',')[1] + "x"
         else:
-            x['H'] = "Hours "+ n
+            x['H'] = "Hours per plan period: "+ n
             multiplication = n + "x"
         
         x['Cost'] = multiplication + "$" + str(i['Price']) + "\n"+"\n" + "$" + str(i['Price']*int(j))
@@ -128,8 +128,8 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
-    document.merge(totalcost=str(total_cost))
-    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
+    document.merge(totalcost="$"+str(round(total_cost))
+    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy= u'\uF06F'+ content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
