@@ -1,6 +1,7 @@
 from flask import Flask,send_file,request,jsonify
 from flask_cors import CORS
 from mailmerge import MailMerge
+from money import Money
 import pandas as pd
 import json
 
@@ -118,7 +119,8 @@ def document():
             x['H'] = "Hours per plan period: "+ n
             multiplication = n + "x"
         
-        x['Cost'] = multiplication + "$" + str(i['Price']) + "\n= " + "$" + str(round(i['Price']*int(j),2))
+        cost = Money(str(i['Price']*int(j)), 'USD')
+        x['Cost'] = multiplication + "$" + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US') 
         total_cost += i['Price']*int(j)
         x['Description'] = str(m)
         goals = ""
@@ -128,7 +130,8 @@ def document():
         data_entries.append(x)
 
     document = MailMerge('WordTemplate.docx')
-    document.merge(totalcost="$"+str(round(total_cost,2)))
+    total_cost = Money(str(total_cost), 'USD')
+    document.merge(totalcost= total_cost.format('en_US'))
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
