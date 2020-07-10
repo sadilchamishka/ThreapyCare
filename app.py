@@ -120,7 +120,7 @@ def document():
             multiplication = n + "x"
         
         cost = Money(str(i['Price']*int(j)), 'USD')
-        x['Cost'] = multiplication + "$" + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US') 
+        x['Cost'] = multiplication  + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US') 
         total_cost += i['Price']*int(j)
         x['Description'] = str(m)
         goals = ""
