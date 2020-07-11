@@ -101,10 +101,11 @@ def supportitemdetails():
 def document():
     content = request.json
     data_entries = []
-    total_cost = 0
+    support_category_map = {}
     for i,j,l,m,n in zip(content['data'],content['hours'],content['goals'],content['description'],content['hoursFrequncy']):
         x={}
-        x['SupportCategory'] = i['SupportCategoryName']
+        SupportCategoryName = i['SupportCategoryName']
+        x['SupportCategory'] = SupportCategoryName
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
         
@@ -120,8 +121,13 @@ def document():
             multiplication = n + "x"
         
         cost = Money(str(i['Price']*int(j)), 'USD')
-        x['Cost'] = multiplication  + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US') 
-        total_cost += i['Price']*int(j)
+        x['Cost'] = multiplication  + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US')
+
+        if SupportCategoryName in support_category_map:
+            support_category_map[SupportCategoryName] += i['Price']*int(j)
+        else:
+            support_category_map[SupportCategoryName] = i['Price']*int(j)
+        
         x['Description'] = str(m)
         goals = ""
         for goal in l:
@@ -129,10 +135,14 @@ def document():
         x['Goals'] = goals
         data_entries.append(x)
 
+    totalcost = ""
+    for key,value in support_category_map.items():
+        totalcost = totalcost + key + " = " Money(str(value),'USD').format('en_US') + "\n"
+
     document = MailMerge('WordTemplate.docx')
-    total_cost = Money(str(total_cost), 'USD')
+    total_cost = totalcost
     document.merge(totalcost= total_cost.format('en_US'))
-    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" Weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
+    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
