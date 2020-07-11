@@ -117,7 +117,7 @@ def document():
             x['H'] = "Hours per Month: "+ n.split(',')[0] + "\n" + "Duration: " + n.split(',')[1] + " months"
             multiplication = n.split(',')[0] + "x" + n.split(',')[1] + "x"
         else:
-            x['H'] = "Hours per plan period: "+ n
+            x['H'] = "Hours per plan period: "+ n + " hours"
             multiplication = n + "x"
         
         cost = Money(str(i['Price']*int(j)), 'USD')
