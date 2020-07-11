@@ -137,7 +137,7 @@ def document():
 
     totalcost = ""
     for key,value in support_category_map.items():
-        totalcost = totalcost + key + " = " Money(str(value),'USD').format('en_US') + "\n"
+        totalcost = totalcost + key + " = " + Money(str(value),'USD').format('en_US') + "\n"
 
     document = MailMerge('WordTemplate.docx')
     total_cost = totalcost
