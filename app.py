@@ -3,6 +3,7 @@ from flask_cors import CORS
 from mailmerge import MailMerge
 from money import Money
 import pandas as pd
+from datetime import datetime
 import json
 
 # Create Flask app and enable CORS
@@ -141,7 +142,20 @@ def document():
     document = MailMerge('WordTemplate.docx')
     total_cost = totalcost
     document.merge(totalcost= total_cost.format('en_US'))
-    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=content['start'],end=content['end'],today=content['today'],policy=content['policy'])
+
+    datetimeobject = datetime.strptime(content['start'],'%Y-%m-%d')
+    newformat = datetimeobject.strftime('%m/%d/%Y')
+    startDate = newformat[:-4]+newformat[-2:]
+
+    datetimeobject = datetime.strptime(content['end'],'%Y-%m-%d')
+    newformat = datetimeobject.strftime('%m/%d/%Y')
+    endDate = newformat[:-4]+newformat[-2:]
+
+    datetimeobject = datetime.strptime(content['today'],'%Y-%m-%d')
+    newformat = datetimeobject.strftime('%m/%d/%Y')
+    today = newformat[:-4]+newformat[-2:]
+
+    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=startDate,end=endDate,today=today,policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
