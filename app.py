@@ -102,7 +102,7 @@ def document():
     content = request.json
     data_entries = []
     support_category_map = {}
-    for i,j,l,m,n in zip(content['data'],content['hours'],content['goals'],content['description'],content['hoursFrequncy']):
+    for i,j,l,n in zip(content['data'],content['hours'],content['goals'],content['hoursFrequncy']):
         x={}
         SupportCategoryName = i['SupportCategoryName']
         x['SupportCategory'] = SupportCategoryName
@@ -128,7 +128,6 @@ def document():
         else:
             support_category_map[SupportCategoryName] = i['Price']*int(j)
         
-        x['Description'] = str(m)
         goals = ""
         for goal in l:
             goals = goals + goal + "\n" + "\n"
