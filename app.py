@@ -151,7 +151,11 @@ def document():
     newformat = datetimeobject.strftime('%m/%d/%Y')
     endDate = newformat[:-4]+newformat[-2:]
 
-    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=startDate,end=endDate,today=content['today'],policy=content['policy'])
+    datetimeobject = datetime.strptime(content['today'],'%Y-%m-%d')
+    newformat = datetimeobject.strftime('%m/%d/%Y')
+    today = newformat[:-4]+newformat[-2:]
+
+    document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=startDate,end=endDate,today=today,policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
     document.write('test-output.docx')
     return send_file('test-output.docx', as_attachment=True)
