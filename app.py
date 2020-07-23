@@ -69,7 +69,8 @@ def login():
     if len(myresult)==1:
         print("sucessss")
         token = encode_auth_token(myresult[0][2])
-        return token.decode('utf-8')
+        print(token)
+        return token
     else:
         print("failed")
         return "Invalid"
