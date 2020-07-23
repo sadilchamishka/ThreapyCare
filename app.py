@@ -57,24 +57,17 @@ def decode_auth_token(auth_token):
 
 @app.route("/login",methods = ['POST'])
 def login():
-    print("+++++++++++++++++++++++++")
     content = request.json
-    print(dbhost+"  "+user)
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
     sql = "SELECT * FROM users WHERE email = '"+content['email']+"' and password = '"+content['password']+"'"
-    print("*********************")
-    print(sql)
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     if len(myresult)==1:
-        print("sucessss")
         token = encode_auth_token(myresult[0][2])
-        print(token)
-        return token
+        return jsonify({"token":token,"role":myresult[0][2]})
     else:
-        print("failed")
-        return "Invalid"
+        return jsonify({"token":"Invalid"})
 
 @app.route("/register",methods = ['POST'])
 def register():
