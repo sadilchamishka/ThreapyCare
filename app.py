@@ -68,7 +68,8 @@ def login():
     myresult = mycursor.fetchall()
     if len(myresult)==1:
         print("sucessss")
-        return encode_auth_token(myresult[0][2]).decode('utf-8')
+        token = encode_auth_token(myresult[0][2])
+        return token.decode('utf-8')
     else:
         print("failed")
         return "Invalid"
