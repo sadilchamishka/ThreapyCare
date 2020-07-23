@@ -4,6 +4,7 @@ from mailmerge import MailMerge
 from money import Money
 import pandas as pd
 from datetime import datetime
+from datetime import timedelta
 import json
 import mysql.connector
 import os
@@ -27,7 +28,7 @@ def encode_auth_token(role):
     """
     try:
         payload = {
-            'exp': datetime.utcnow() + datetime.timedelta(days=0, seconds=1000),
+            'exp': datetime.utcnow() + timedelta(days=0, seconds=1000),
             'iat': datetime.utcnow(),
             'role': role
         }
