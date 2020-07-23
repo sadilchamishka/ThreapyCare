@@ -60,11 +60,15 @@ def login():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
     sql = "SELECT * FROM users WHERE email = "+content['email']+" and password = "+content['password']
+    print("*********************")
+    print(sql)
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     if len(myresult)==1:
+        print("sucessss")
         return encode_auth_token(myresult[0][2]).decode('utf-8')
     else:
+        print("failed")
         return "Invalid"
 
 @app.route("/register",methods = ['POST'])
