@@ -5,10 +5,87 @@ from money import Money
 import pandas as pd
 from datetime import datetime
 import json
+import mysql.connector
+import os
+import jwt
 
-# Create Flask app and enable CORS
+dbhost = os.environ.get('dbhost', None)
+user = os.environ.get('user', None)
+password = os.environ.get('password', None)
+database = os.environ.get('database', None)
+secret = os.environ.get('secret', None)
+
+
+## Create Flask app and enable CORS
 app = Flask(__name__)
 cors = CORS(app)
+
+def encode_auth_token(role):
+    """
+    Generates the Auth Token
+    :return: string
+    """
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=1000),
+            'iat': datetime.datetime.utcnow(),
+            'role': role
+        }
+        return jwt.encode(
+            payload,
+            secret,
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
+
+def decode_auth_token(auth_token):
+    """
+    Decodes the auth token
+    :param auth_token:
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, secret)
+        return payload['role']
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired'
+    except jwt.InvalidTokenError:
+        return 'Invalid token'
+
+
+@app.route("/login",methods = ['POST'])
+def login():
+    content = request.json
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM users WHERE email = "+content['email']+" and password = "+content['password']
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    if len(myresult)==1:
+        return encode_auth_token(myresult[0][2]).decode('utf-8')
+    else:
+        return "Invalid"
+
+@app.route("/register",methods = ['POST'])
+def register():
+    content = request.json
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+
+    sql = "INSERT INTO users (email, password, role) VALUES (%s, %s, %s)"
+    val = (content['email'], content['password'], content['role'])
+    try:
+        mycursor.execute(sql, val)
+        mydb.commit()
+        return "Success"
+    except:
+        return "User already Exist"
+
+@app.route("/auth",methods = ['POST'])
+def auth():
+    content = request.json
+    return decode_auth_token(content['token'].encode('utf-8'))
 
 @app.route("/updatedata",methods = ['POST'])
 def updateData():
@@ -134,7 +211,7 @@ def document():
             goals = goals + goal + "\n" + "\n"
         x['Goals'] = goals
         data_entries.append(x)
-
+	
     totalcost = ""
     for key,value in support_category_map.items():
         totalcost = totalcost + key + " = " + Money(str(value),'USD').format('en_US') + "\n"
@@ -144,17 +221,14 @@ def document():
     document.merge(totalcost= total_cost.format('en_US'))
 
     datetimeobject = datetime.strptime(content['start'],'%Y-%m-%d')
-    newformat = datetimeobject.strftime('%m/%d/%Y')
-    startDate = newformat[:-4]+newformat[-2:]
+    startDate = datetimeobject.strftime('%m/%d/%Y')
 
     datetimeobject = datetime.strptime(content['end'],'%Y-%m-%d')
-    newformat = datetimeobject.strftime('%m/%d/%Y')
-    endDate = newformat[:-4]+newformat[-2:]
+    endDate = datetimeobject.strftime('%m/%d/%Y')
 
 
     datetimeobject = datetime.strptime(content['today'],'%Y-%m-%d')
-    newformat = datetimeobject.strftime('%m/%d/%Y')
-    today = newformat[:-4]+newformat[-2:]
+    today = datetimeobject.strftime('%m/%d/%Y')
 
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=startDate,end=endDate,today=today,policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)

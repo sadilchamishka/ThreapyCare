@@ -7,3 +7,6 @@ pandas
 Flask-Cors
 money
 babel
+mysql.connector
+pymysql
+pyjwt==1.4.2
