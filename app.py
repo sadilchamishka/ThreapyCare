@@ -61,7 +61,7 @@ def login():
     print(dbhost+"  "+user)
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM users WHERE email = "+content['email']+" and password = "+content['password']
+    sql = "SELECT * FROM users WHERE email = '"+content['email']+"' and password = '"+content['password']+"'"
     print("*********************")
     print(sql)
     mycursor.execute(sql)
