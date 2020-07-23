@@ -65,9 +65,9 @@ def login():
     myresult = mycursor.fetchall()
     if len(myresult)==1:
         token = encode_auth_token(myresult[0][2])
-        return jsonify({"token":token,"role":myresult[0][2]})
+        return token
     else:
-        return jsonify({"token":"Invalid"})
+        return "Invalid"
 
 @app.route("/register",methods = ['POST'])
 def register():
@@ -87,7 +87,8 @@ def register():
 @app.route("/auth",methods = ['POST'])
 def auth():
     content = request.json
-    return decode_auth_token(content['token'].encode('utf-8'))
+    print(content['token'])
+    return decode_auth_token(content['token'])
 
 @app.route("/updatedata",methods = ['POST'])
 def updateData():
