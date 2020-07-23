@@ -27,8 +27,8 @@ def encode_auth_token(role):
     """
     try:
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=1000),
-            'iat': datetime.datetime.utcnow(),
+            'exp': datetime.utcnow() + datetime.timedelta(days=0, seconds=1000),
+            'iat': datetime.utcnow(),
             'role': role
         }
         return jwt.encode(
