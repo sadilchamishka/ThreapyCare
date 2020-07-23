@@ -56,6 +56,7 @@ def decode_auth_token(auth_token):
 
 @app.route("/login",methods = ['POST'])
 def login():
+    print("+++++++++++++++++++++++++")
     content = request.json
     print(dbhost+"  "+user)
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
