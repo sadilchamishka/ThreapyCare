@@ -9,4 +9,3 @@ money
 babel
 mysql.connector
 pyjwt==1.4.2
-hashlib
