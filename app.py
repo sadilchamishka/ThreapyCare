@@ -121,6 +121,20 @@ def updateUser():
         mydb.commit()
         return "Success"
 
+@app.route("/deleteuser",methods=['POST'])
+def deleteUser():
+    content = request.json
+    result = decode_auth_token(content['token'])
+    if (result=='Signature expired' or result=='Invalid token'):
+        return "Invalid token"
+    else:
+        mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+        mycursor = mydb.cursor()
+        sql = "DELETE FROM users WHERE email = "+"'"+content['email']+"'"
+        mycursor.execute(sql)
+        mydb.commit()
+        return "Success"
+
 
 @app.route("/auth",methods = ['POST'])
 def auth():
