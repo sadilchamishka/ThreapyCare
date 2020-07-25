@@ -9,6 +9,7 @@ import json
 import mysql.connector
 import os
 import jwt
+import hashlib
 
 dbhost = os.environ.get('dbhost', None)
 user = os.environ.get('user', None)
@@ -28,7 +29,7 @@ def encode_auth_token(role):
     """
     try:
         payload = {
-            'exp': datetime.utcnow() + timedelta(days=0, seconds=1000),
+            'exp': datetime.utcnow() + timedelta(days=1, seconds=0),
             'iat': datetime.utcnow(),
             'role': role
         }
@@ -60,7 +61,10 @@ def login():
     content = request.json
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM users WHERE email = '"+content['email']+"' and password = '"+content['password']+"'"
+
+    hash_object = hashlib.md5(content['password'].encode())
+    hash = hash_object.hexdigest()
+    sql = "SELECT * FROM users WHERE email = '"+content['email']+"' and password = '"+hash+"'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     if len(myresult)==1:
@@ -75,8 +79,11 @@ def register():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
 
+    hash_object = hashlib.md5(content['password'].encode())
+    hash = hash_object.hexdigest()
+
     sql = "INSERT INTO users (email, password, role) VALUES (%s, %s, %s)"
-    val = (content['email'], content['password'], content['role'])
+    val = (content['email'], hash, content['role'])
     try:
         mycursor.execute(sql, val)
         mydb.commit()
@@ -102,13 +109,17 @@ def viewUsers():
 @app.route("/updateuser",methods=['POST'])
 def updateUser():
     content = request.json
-    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
-    mycursor = mydb.cursor()
-    sql = "UPDATE users SET password = %s WHERE email = %s"
-    val = (content['password'],content['email'])
-    mycursor.execute(sql,val)
-    mydb.commit()
-    return "Success"
+    result = decode_auth_token(content['token'])
+    if (result=='Signature expired' or result=='Invalid token'):
+        return "Invalid token"
+    else:
+        mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+        mycursor = mydb.cursor()
+        sql = "UPDATE users SET password = %s WHERE email = %s"
+        val = (content['password'],content['email'])
+        mycursor.execute(sql,val)
+        mydb.commit()
+        return "Success"
 
 
 @app.route("/auth",methods = ['POST'])
