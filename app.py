@@ -84,6 +84,22 @@ def register():
     except:
         return "User already Exist"
 
+@app.route("/users")
+def viewUsers():
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM users"
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    users = []
+    for x in myresult:
+        users.append(list(x))
+
+    response = {}
+    response['users'] = users
+    return json.dumps(response)
+
+
 @app.route("/auth",methods = ['POST'])
 def auth():
     content = request.json
