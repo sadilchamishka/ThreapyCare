@@ -108,6 +108,7 @@ def updateUser():
     val = (content['password'],content['email'])
     mycursor.execute(sql,val)
     mydb.commit()
+    return "Success"
 
 
 @app.route("/auth",methods = ['POST'])
