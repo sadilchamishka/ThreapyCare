@@ -82,8 +82,8 @@ def register():
     hash_object = hashlib.md5(content['password'].encode())
     hash = hash_object.hexdigest()
 
-    sql = "INSERT INTO users (email, password, role) VALUES (%s, %s, %s)"
-    val = (content['email'], hash, content['role'])
+    sql = "INSERT INTO users (email, name, password, role) VALUES (%s, %s, %s, %s)"
+    val = (content['email'], content['name'], hash, content['role'])
     try:
         mycursor.execute(sql, val)
         mydb.commit()
@@ -95,7 +95,7 @@ def register():
 def viewUsers():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM users"
+    sql = "SELECT email,name,role FROM users"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     users = []
@@ -115,11 +115,20 @@ def updateUser():
     else:
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
-        sql = "UPDATE users SET password = %s WHERE email = %s"
-        val = (content['password'],content['email'])
-        mycursor.execute(sql,val)
-        mydb.commit()
-        return "Success"
+        if content['password']=="":
+            sql = "UPDATE users SET name = %s WHERE email = %s"
+            val = (content['name'],content['email'])
+            mycursor.execute(sql,val)
+            mydb.commit()
+            return "Success"
+        else:
+            hash_object = hashlib.md5(content['password'].encode())
+            hash = hash_object.hexdigest()
+            sql = "UPDATE users SET name = %s,password = %s WHERE email = %s"
+            val = (content['name'],hash,content['email'])
+            mycursor.execute(sql,val)
+            mydb.commit()
+            return "Success"
 
 @app.route("/deleteuser",methods=['POST'])
 def deleteUser():
