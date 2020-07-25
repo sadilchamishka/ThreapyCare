@@ -68,12 +68,12 @@ def login():
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     if len(myresult)==1:
-        token = encode_auth_token(myresult[0][2])
+        token = encode_auth_token(myresult[0][3])
         return token
     else:
         return "Invalid"
 
-@app.route("/register",methods = ['POST'])
+@app.route("/registeruser",methods = ['POST'])
 def register():
     content = request.json
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
@@ -112,7 +112,7 @@ def updateUser():
     result = decode_auth_token(content['token'])
     if (result=='Signature expired' or result=='Invalid token'):
         return "Invalid token"
-    else:
+    elif (result=="admin"):
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
         if content['password']=="":
@@ -129,6 +129,8 @@ def updateUser():
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
+    else:
+        return "Unauthorized"
 
 @app.route("/deleteuser",methods=['POST'])
 def deleteUser():
@@ -136,13 +138,15 @@ def deleteUser():
     result = decode_auth_token(content['token'])
     if (result=='Signature expired' or result=='Invalid token'):
         return "Invalid token"
-    else:
+    elif (result=="admin"):
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
         sql = "DELETE FROM users WHERE email = "+"'"+content['email']+"'"
         mycursor.execute(sql)
         mydb.commit()
         return "Success"
+    else:
+        return "Unauthorized"
 
 
 @app.route("/auth",methods = ['POST'])
