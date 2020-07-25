@@ -99,6 +99,16 @@ def viewUsers():
     response['users'] = users
     return json.dumps(response)
 
+@app.route("/updateuser",methods=['POST'])
+def updateUser():
+    content = request.json
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+    sql = "UPDATE users SET password = %s WHERE email = %s"
+    val = (content['password'],content['email'])
+    mycursor.execute(sql,val)
+    mydb.commit()
+
 
 @app.route("/auth",methods = ['POST'])
 def auth():
