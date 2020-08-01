@@ -64,7 +64,7 @@ def login():
 
     hash_object = hashlib.md5(content['password'].encode())
     hash = hash_object.hexdigest()
-    sql = "SELECT * FROM users WHERE email = '"+content['email']+"' and password = '"+hash+"'"
+    sql = "SELECT * FROM users WHERE name = '"+content['name']+"' and password = '"+hash+"'"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     if len(myresult)==1:
@@ -116,16 +116,16 @@ def updateUser():
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
         if content['password']=="":
-            sql = "UPDATE users SET name = %s WHERE email = %s"
-            val = (content['name'],content['email'])
+            sql = "UPDATE users SET email = %s WHERE name = %s"
+            val = (content['email'],content['name'])
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
         else:
             hash_object = hashlib.md5(content['password'].encode())
             hash = hash_object.hexdigest()
-            sql = "UPDATE users SET name = %s,password = %s WHERE email = %s"
-            val = (content['name'],hash,content['email'])
+            sql = "UPDATE users SET email = %s,password = %s WHERE name = %s"
+            val = (content['email'],hash,content['name'])
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
@@ -141,7 +141,7 @@ def deleteUser():
     elif (result=="admin"):
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
-        sql = "DELETE FROM users WHERE email = "+"'"+content['email']+"'"
+        sql = "DELETE FROM users WHERE name = "+"'"+content['name']+"'"
         mycursor.execute(sql)
         mydb.commit()
         return "Success"
@@ -289,14 +289,14 @@ def document():
     document.merge(totalcost= total_cost.format('en_US'))
 
     datetimeobject = datetime.strptime(content['start'],'%Y-%m-%d')
-    startDate = datetimeobject.strftime('%m/%d/%Y')
+    startDate = datetimeobject.strftime('%d/%m/%Y')
 
     datetimeobject = datetime.strptime(content['end'],'%Y-%m-%d')
-    endDate = datetimeobject.strftime('%m/%d/%Y')
+    endDate = datetimeobject.strftime('%d/%m/%Y')
 
 
     datetimeobject = datetime.strptime(content['today'],'%Y-%m-%d')
-    today = datetimeobject.strftime('%m/%d/%Y')
+    today = datetimeobject.strftime('%d/%m/%Y')
 
     document.merge(name=str(content['name']),ndis=str(content['ndis']),sos=str(content['sos']),duration=str(int(content['duration']/7))+" weeks",start=startDate,end=endDate,today=today,policy=content['policy'])
     document.merge_rows('SupportCategory',data_entries)
