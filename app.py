@@ -98,12 +98,20 @@ def viewUsers():
     sql = "SELECT email,name,role FROM users"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    users = []
+    
+    result = []
+
     for x in myresult:
-        users.append(list(x))
+        user = list(x)
+        user_details = {}
+        user_details['email'] = user[0]
+        user_details['name'] = user[1]
+        user_details['role'] = user[2]
+        user_details['password'] = ""
+        result.append(user_details)
 
     response = {}
-    response['users'] = users
+    response['users'] = result
     return json.dumps(response)
 
 @app.route("/updateuser",methods=['POST'])
