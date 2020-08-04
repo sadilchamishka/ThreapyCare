@@ -102,11 +102,11 @@ def viewUsers():
     result = []
 
     for x in myresult:
-        user = list(x)
+        user1 = list(x)
         user_details = {}
-        user_details['email'] = user[0]
-        user_details['name'] = user[1]
-        user_details['role'] = user[2]
+        user_details['email'] = user1[0]
+        user_details['name'] = user1[1]
+        user_details['role'] = user1[2]
         user_details['password'] = ""
         result.append(user_details)
 
