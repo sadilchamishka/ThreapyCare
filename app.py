@@ -111,6 +111,7 @@ def viewUsers():
 
     response = {}
     response['users'] = result
+    print(response)
     return json.dumps(response)
 
 @app.route("/updateuser",methods=['POST'])
