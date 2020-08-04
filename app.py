@@ -109,10 +109,7 @@ def viewUsers():
         user_details['password'] = ""
         result.append(user_details)
 
-    response = {}
-    response['users'] = result
-    print(response)
-    return json.dumps(response)
+    return jsonify({'users':result})
 
 @app.route("/updateuser",methods=['POST'])
 def updateUser():
