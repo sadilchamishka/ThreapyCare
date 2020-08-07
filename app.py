@@ -103,13 +103,13 @@ def viewUsers():
 
     for x in myresult:
         user1 = list(x)
-        
+        user_details = {}
+
         if user1[2]=='admin':
             user_details['name'] = "(admin) "+user1[1]
         else:
             user_details['name'] = user1[1]
             
-        user_details = {}
         user_details['email'] = user1[0]
         user_details['password'] = ""
         result.append(user_details)
