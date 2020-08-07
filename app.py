@@ -95,7 +95,7 @@ def register():
 def viewUsers():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
-    sql = "SELECT email,name FROM users ORDER BY role ASC"
+    sql = "SELECT email,name,role FROM users ORDER BY role ASC"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     
@@ -103,9 +103,14 @@ def viewUsers():
 
     for x in myresult:
         user1 = list(x)
+        
+        if user1[2]=='admin':
+            user_details['name'] = "(admin) "+user1[1]
+        else:
+            user_details['name'] = user1[1]
+            
         user_details = {}
         user_details['email'] = user1[0]
-        user_details['name'] = user1[1]
         user_details['password'] = ""
         result.append(user_details)
 
