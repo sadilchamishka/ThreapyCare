@@ -95,7 +95,7 @@ def register():
 def viewUsers():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
-    sql = "SELECT email,name FROM users where role='general'"
+    sql = "SELECT email,name FROM users ORDER BY role ASC"
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     
