@@ -106,7 +106,7 @@ def viewUsers():
         user_details = {}
 
         if user1[2]=='admin':
-            user_details['name'] = "(admin) "+user1[1]
+            user_details['name'] = "👨🏻‍🔧 "+user1[1]
         else:
             user_details['name'] = user1[1]
             
@@ -127,7 +127,11 @@ def updateUser():
         mycursor = mydb.cursor()
         if content['password']=="":
             sql = "UPDATE users SET email = %s WHERE name = %s"
-            val = (content['email'],content['name'])
+            name = content['name']
+            print("************************")
+            print(name)
+            print(name[5:])
+            val = (content['email'],name[5:])
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
@@ -168,19 +172,51 @@ def auth():
 @app.route("/updatedata",methods = ['POST'])
 def updateData():
     f = request.files['file'] 
+    f.save('Dataset_temp.xlsx')
+    f.close()
+    data = pd.read_excel('Dataset_temp.xlsx')
+    columns =  data.columns
+
+    for i in ['Support Category Name','Support Item Number','Support Item Name','Price']:
+        if i not in columns:
+            return "Invalid"
+
+    f = request.files['file'] 
     f.save('Dataset.xlsx')
+    f.close()
     return "Success"
 
 @app.route("/updategoals",methods = ['POST'])
 def updateGoals():
     f = request.files['file'] 
-    f.save('Goals.xlsx') 
+    f.save('Goals_temp.xlsx') 
+    f.close()
+    data = pd.read_excel('Goals_temp.xlsx')
+    columns =  data.columns
+
+    for i in ['Service','Goals']:
+        if i not in columns:
+            return "Invalid"
+
+    f = request.files['file'] 
+    f.save('Goals.xlsx')
+    f.close()
     return "Success"
 
 @app.route("/updatepolicy",methods = ['POST'])
 def updatePolicy():
     f = request.files['file'] 
+    f.save('Policies_temp.xlsx')
+    f.close()
+    data = pd.read_excel('Policies_temp.xlsx')
+    columns =  data.columns
+
+    for i in ['Policy']:
+        if i not in columns:
+            return "Invalid"
+    f = request.files['file'] 
     f.save('Policies.xlsx')
+    f.close()
     return "Success"
 
 # Return json array of goals
