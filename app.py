@@ -127,14 +127,12 @@ def updateUser():
         mycursor = mydb.cursor()
 
         name = content['name']
-        print("************************")
-        print(name)
-        print(name[5:])
-
+        if name[0]=="👨":
+            name = name[5:]
+        
         if content['password']=="":
             sql = "UPDATE users SET email = %s WHERE name = %s"
-            name = content['name']
-            val = (content['email'],name[5:])
+            val = (content['email'],name)
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
@@ -142,7 +140,7 @@ def updateUser():
             hash_object = hashlib.md5(content['password'].encode())
             hash = hash_object.hexdigest()
             sql = "UPDATE users SET email = %s,password = %s WHERE name = %s"
-            val = (content['email'],hash,content['name'])
+            val = (content['email'],hash,name)
             mycursor.execute(sql,val)
             mydb.commit()
             return "Success"
