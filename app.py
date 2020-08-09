@@ -174,7 +174,6 @@ def auth():
 def updateData():
     f = request.files['file'] 
     f.save('Dataset_temp.xlsx')
-    f.close()
     data = pd.read_excel('Dataset_temp.xlsx')
     columns =  data.columns
 
@@ -182,7 +181,6 @@ def updateData():
         if i not in columns:
             return "Invalid"
 
-    f = request.files['file'] 
     f.save('Dataset.xlsx')
     f.close()
     return "Success"
@@ -191,7 +189,6 @@ def updateData():
 def updateGoals():
     f = request.files['file'] 
     f.save('Goals_temp.xlsx') 
-    f.close()
     data = pd.read_excel('Goals_temp.xlsx')
     columns =  data.columns
 
@@ -199,7 +196,6 @@ def updateGoals():
         if i not in columns:
             return "Invalid"
 
-    f = request.files['file'] 
     f.save('Goals.xlsx')
     f.close()
     return "Success"
@@ -208,14 +204,13 @@ def updateGoals():
 def updatePolicy():
     f = request.files['file'] 
     f.save('Policies_temp.xlsx')
-    f.close()
     data = pd.read_excel('Policies_temp.xlsx')
     columns =  data.columns
 
     for i in ['Policy']:
         if i not in columns:
             return "Invalid"
-    f = request.files['file'] 
+
     f.save('Policies.xlsx')
     f.close()
     return "Success"
