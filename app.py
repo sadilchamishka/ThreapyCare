@@ -118,22 +118,22 @@ def viewUsers():
 
 @app.route("/updateuser",methods=['POST'])
 def updateUser():
-    print("--------------------------")
     content = request.json
     result = decode_auth_token(content['token'])
-    print(result)
     if (result=='Signature expired' or result=='Invalid token'):
-        print("Invalid token")
         return "Invalid token"
     elif (result=="admin"):
         mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
         mycursor = mydb.cursor()
+
+        name = content['name']
+        print("************************")
+        print(name)
+        print(name[5:])
+
         if content['password']=="":
             sql = "UPDATE users SET email = %s WHERE name = %s"
             name = content['name']
-            print("************************")
-            print(name)
-            print(name[5:])
             val = (content['email'],name[5:])
             mycursor.execute(sql,val)
             mydb.commit()
