@@ -127,8 +127,8 @@ def updateUser():
         mycursor = mydb.cursor()
 
         name = content['name']
-        if name[0]=="👨":
-            name = name[5:]
+        if name[1:6]=="admin":
+            name = name[8:]
         
         if content['password']=="":
             sql = "UPDATE users SET email = %s WHERE name = %s"
