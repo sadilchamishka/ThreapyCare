@@ -106,7 +106,7 @@ def viewUsers():
         user_details = {}
 
         if user1[2]=='admin':
-            user_details['name'] = "👨🏻‍🔧 "+user1[1]
+            user_details['name'] = "(admin) "+user1[1]
         else:
             user_details['name'] = user1[1]
             
