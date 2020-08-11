@@ -181,6 +181,7 @@ def updateData():
         if i not in columns:
             return "Invalid"
 
+    f = request.files['file']
     f.save('Dataset.xlsx')
     return "Success"
 
@@ -195,6 +196,7 @@ def updateGoals():
         if i not in columns:
             return "Invalid"
 
+    f = request.files['file']
     f.save('Goals.xlsx')
     return "Success"
 
@@ -209,6 +211,7 @@ def updatePolicy():
         if i not in columns:
             return "Invalid"
 
+    f = request.files['file'] 
     f.save('Policies.xlsx')
     return "Success"
 
