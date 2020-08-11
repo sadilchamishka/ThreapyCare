@@ -9,6 +9,7 @@ import json
 import mysql.connector
 import os
 import jwt
+import shutil
 import hashlib
 
 dbhost = os.environ.get('dbhost', None)
@@ -181,8 +182,7 @@ def updateData():
         if i not in columns:
             return "Invalid"
 
-    f = request.files['file']
-    f.save('Dataset.xlsx')
+    shutil.move('Dataset_temp.xlsx', 'Dataset.xlsx')
     return "Success"
 
 @app.route("/updategoals",methods = ['POST'])
@@ -196,8 +196,7 @@ def updateGoals():
         if i not in columns:
             return "Invalid"
 
-    f = request.files['file']
-    f.save('Goals.xlsx')
+    shutil.move('Goals_temp.xlsx', 'Goals.xlsx')
     return "Success"
 
 @app.route("/updatepolicy",methods = ['POST'])
@@ -211,8 +210,7 @@ def updatePolicy():
         if i not in columns:
             return "Invalid"
 
-    f = request.files['file'] 
-    f.save('Policies.xlsx')
+    shutil.move('Policies_temp.xlsx', 'Policies.xlsx')
     return "Success"
 
 # Return json array of goals
