@@ -182,7 +182,6 @@ def updateData():
             return "Invalid"
 
     f.save('Dataset.xlsx')
-    f.close()
     return "Success"
 
 @app.route("/updategoals",methods = ['POST'])
@@ -197,7 +196,6 @@ def updateGoals():
             return "Invalid"
 
     f.save('Goals.xlsx')
-    f.close()
     return "Success"
 
 @app.route("/updatepolicy",methods = ['POST'])
@@ -212,7 +210,6 @@ def updatePolicy():
             return "Invalid"
 
     f.save('Policies.xlsx')
-    f.close()
     return "Success"
 
 # Return json array of goals
