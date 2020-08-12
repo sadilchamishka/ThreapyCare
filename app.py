@@ -18,6 +18,21 @@ password = os.environ.get('password', None)
 database = os.environ.get('database', None)
 secret = os.environ.get('secret', None)
 
+mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+mycursor = mydb.cursor()
+sql = "SELECT * from files"
+mycursor.execute(sql)
+record = mycursor.fetchall()
+
+with open("Dataset.xlsx", 'wb') as file:
+  file.write(record[0][1])
+
+with open("Goals.xlsx", 'wb') as file:
+  file.write(record[1][1])
+
+with open("Policies.xlsx", 'wb') as file:
+  file.write(record[2][1])
+
 
 ## Create Flask app and enable CORS
 app = Flask(__name__)
@@ -182,6 +197,18 @@ def updateData():
         if i not in columns:
             return "Invalid"
 
+    binaryData = ''
+    with open("Dataset_temp.xlsx", 'rb') as file:
+        binaryData = file.read()
+
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+
+    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    val = (binaryData,"Dataset")
+    mycursor.execute(sql, val)
+    mydb.commit()
+
     shutil.move('Dataset_temp.xlsx', 'Dataset.xlsx')
     return "Success"
 
@@ -196,6 +223,18 @@ def updateGoals():
         if i not in columns:
             return "Invalid"
 
+    binaryData = ''
+    with open("Goals_temp.xlsx", 'rb') as file:
+        binaryData = file.read()
+
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+
+    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    val = (binaryData,"Goals")
+    mycursor.execute(sql, val)
+    mydb.commit()
+
     shutil.move('Goals_temp.xlsx', 'Goals.xlsx')
     return "Success"
 
@@ -209,6 +248,18 @@ def updatePolicy():
     for i in ['Policy']:
         if i not in columns:
             return "Invalid"
+
+    binaryData = ''
+    with open("Policies_temp.xlsx", 'rb') as file:
+        binaryData = file.read()
+
+    mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
+    mycursor = mydb.cursor()
+
+    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    val = (binaryData,"Policies")
+    mycursor.execute(sql, val)
+    mydb.commit()
 
     shutil.move('Policies_temp.xlsx', 'Policies.xlsx')
     return "Success"
