@@ -25,15 +25,18 @@ mycursor.execute(sql)
 record = mycursor.fetchall()
 
 with open("Dataset.xlsx", 'wb') as file:
-  file.write(record[0][1])
-  print("*****************************",record[0][0])
+    file.write(record[0][1])
+    print("*****************************",record[0][0])
 
 with open("Goals.xlsx", 'wb') as file:
-  file.write(record[1][1])
+    print("*****************************",record[1][0])
+    file.write(record[1][1])
 
 with open("Policies.xlsx", 'wb') as file:
-  file.write(record[2][1])
+    print("*****************************",record[2][0])
+    file.write(record[2][1])
 
+print(os.path.isfile('Dataset.xlsx'))
 
 ## Create Flask app and enable CORS
 app = Flask(__name__)
