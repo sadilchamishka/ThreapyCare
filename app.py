@@ -204,7 +204,7 @@ def updateData():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
 
-    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    sql = "UPDATE files SET file = %s WHERE name = %s"
     val = (binaryData,"Dataset")
     mycursor.execute(sql, val)
     mydb.commit()
@@ -230,7 +230,7 @@ def updateGoals():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
 
-    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    sql = "UPDATE files SET file = %s WHERE name = %s"
     val = (binaryData,"Goals")
     mycursor.execute(sql, val)
     mydb.commit()
@@ -256,7 +256,7 @@ def updatePolicy():
     mydb = mysql.connector.connect(host=dbhost,user=user,password=password,database=database)
     mycursor = mydb.cursor()
 
-    sql = "UPDATE files SET file = %s WHERE name = %s)"
+    sql = "UPDATE files SET file = %s WHERE name = %s"
     val = (binaryData,"Policies")
     mycursor.execute(sql, val)
     mydb.commit()
