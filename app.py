@@ -26,6 +26,7 @@ record = mycursor.fetchall()
 
 with open("Dataset.xlsx", 'wb') as file:
   file.write(record[0][1])
+  print("*****************************",record[0][0])
 
 with open("Goals.xlsx", 'wb') as file:
   file.write(record[1][1])
