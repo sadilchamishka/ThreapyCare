@@ -342,7 +342,7 @@ def document():
     for i,j,l,n in zip(content['data'],content['hours'],content['goals'],content['hoursFrequncy']):
         x={}
         SupportCategoryName = i['SupportCategoryName']
-        x['SupportCategory'] = SupportCategoryName
+        x['Support'] = SupportCategoryName
         x['ItemName'] = i['SupportItemName']
         x['ItemId'] = i['SupportItemNumber']
         
