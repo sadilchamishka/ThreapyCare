@@ -372,12 +372,16 @@ def document():
         data_entries.append(x)
 	
     totalcost = ""
+    total_with_yes_no = ""
     for key,value in support_category_map.items():
         totalcost = totalcost + key + " = " + Money(str(value),'USD').format('en_US') + "\n"
+        total_with_yes_no = total_with_yes_no + key + " = " + Money(str(value),'USD').format('en_US') + "\tYes\tNo"+ "\n"
 
     document = MailMerge('WordTemplate.docx')
     total_cost = totalcost
     document.merge(totalcost= total_cost.format('en_US'))
+    document.merge(totalyesno= total_with_yes_no.format('en_US'))
+
 
     datetimeobject = datetime.strptime(content['start'],'%Y-%m-%d')
     startDate = datetimeobject.strftime('%d/%m/%Y')
