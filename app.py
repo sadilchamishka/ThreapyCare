@@ -375,7 +375,7 @@ def document():
     total_with_yes_no = ""
     for key,value in support_category_map.items():
         totalcost = totalcost + key + " = " + Money(str(value),'USD').format('en_US') + "\n"
-        total_with_yes_no = total_with_yes_no + key + " = " + Money(str(value),'USD').format('en_US') + "\t"+"Yes"+"\t"+"No"+ "\n"
+        total_with_yes_no = total_with_yes_no + key + " = " + Money(str(value),'USD').format('en_US') + "   Yes    No"+ "\n"
 
     document = MailMerge('WordTemplate.docx')
     total_cost = totalcost
