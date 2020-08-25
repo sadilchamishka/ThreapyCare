@@ -357,13 +357,13 @@ def document():
             x['H'] = "Hours per plan period: "+ n + " hours"
             multiplication = n + "x"
         
-        cost = Money(str(i['Price']*int(j)), 'USD')
+        cost = Money(str(i['Price']*float(j)), 'USD')
         x['Cost'] = multiplication  + Money(str(i['Price']),'USD').format('en_US') + "\n= " + cost.format('en_US')
 
         if SupportCategoryName in support_category_map:
-            support_category_map[SupportCategoryName] += i['Price']*int(j)
+            support_category_map[SupportCategoryName] += i['Price']*float(j)
         else:
-            support_category_map[SupportCategoryName] = i['Price']*int(j)
+            support_category_map[SupportCategoryName] = i['Price']*float(j)
         
         goals = ""
         for goal in l:
